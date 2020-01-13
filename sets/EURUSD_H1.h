@@ -10,15 +10,12 @@ struct Stg_AD_EURUSD_H1_Params : Stg_AD_Params {
     symbol = "EURUSD";
     tf = PERIOD_H1;
     AD_Shift = 0;
-    AD_TrailingStopMethod = 0;
-    AD_TrailingProfitMethod = 0;
+    AD_SignalOpenMethod = 0;
     AD_SignalOpenLevel = 0;
-    AD_SignalBaseMethod = 0;
-    AD_SignalOpenMethod1 = 0;
-    AD_SignalOpenMethod2 = 0;
+    AD_SignalCloseMethod = 0;
     AD_SignalCloseLevel = 0;
-    AD_SignalCloseMethod1 = 0;
-    AD_SignalCloseMethod2 = 0;
+    AD_PriceLimitMethod = 0;
+    AD_PriceLimitLevel = 0;
     AD_MaxSpread = 0;
   }
 };

@@ -91,19 +91,18 @@ class Stg_AD : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
-    bool _result = false;
-    double ad_0 = ((Indi_AD *)this.Data()).GetValue(0);
-    double ad_1 = ((Indi_AD *)this.Data()).GetValue(1);
-    double ad_2 = ((Indi_AD *)this.Data()).GetValue(2);
+    Indicator *_indi = Data();
+    bool _is_valid = _indi[CURR].IsValid();
+    bool _result = _is_valid;
     switch (_cmd) {
       // Buy: indicator growth at downtrend.
       case ORDER_TYPE_BUY:
-        _result = ad_0 >= ad_1 + _level && Chart().GetClose(0) <= Chart().GetClose(1);
+        _result &= _indi[CURR].value[0] >= _indi[PREV].value[0] + _level && Chart().GetClose(0) <= Chart().GetClose(1);
         if (METHOD(_method, 0)) _result &= Open[CURR] > Close[CURR];
         break;
       // Sell: indicator fall at uptrend.
       case ORDER_TYPE_SELL:
-        _result = ad_0 <= ad_1 - _level && Chart().GetClose(0) >= Chart().GetClose(1);
+        _result &= _indi[CURR].value[0] <= _indi[PREV].value[0] - _level && Chart().GetClose(0) >= Chart().GetClose(1);
         if (METHOD(_method, 0)) _result &= Open[CURR] < Close[CURR];
         break;
     }
@@ -154,7 +153,7 @@ class Stg_AD : public Strategy {
    */
   double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, double _level = 0.0) {
     double _trail = _level * Market().GetPipSize();
-    int _direction = Order::OrderDirection(_cmd) * (_mode == ORDER_TYPE_SL ? -1 : 1);
+    int _direction = Order::OrderDirection(_cmd, _mode);
     double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
     double _result = _default_value;
     switch (_method) {

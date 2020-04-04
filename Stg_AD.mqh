@@ -23,7 +23,7 @@ INPUT int AD_SignalOpenBoostMethod = 0;                       // Signal open fil
 INPUT int AD_SignalCloseMethod = 0;                           // Signal close method
 INPUT double AD_SignalCloseLevel = 0.0004;                    // Signal close level (>0.0001)
 INPUT int AD_PriceLimitMethod = 0;                            // Price limit method
-INPUT double AD_PriceLimitLevel = 0;                          // Price limit level
+INPUT double AD_PriceLimitLevel = 2;                          // Price limit level
 INPUT double AD_MaxSpread = 6.0;                              // Max spread to trade (pips)
 
 // Struct to define strategy parameters to override.
@@ -81,6 +81,7 @@ class Stg_AD : public Strategy {
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.AD_SignalOpenMethod, _params.AD_SignalOpenLevel, _params.AD_SignalOpenFilterMethod,
                        _params.AD_SignalOpenBoostMethod, _params.AD_SignalCloseMethod, _params.AD_SignalCloseLevel);
+    sparams.SetPriceLimits(_params.AD_PriceLimitMethod, _params.AD_PriceLimitLevel);
     sparams.SetMaxSpread(_params.AD_MaxSpread);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_AD(sparams, "AD");
@@ -152,14 +153,17 @@ class Stg_AD : public Strategy {
    * Gets price limit value for profit take or stop loss.
    */
   double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, double _level = 0.0) {
+    Indicator *_indi = Data();
     double _trail = _level * Market().GetPipSize();
+    int _bar_count = (int) _level * 10;
     int _direction = Order::OrderDirection(_cmd, _mode);
     double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
     double _result = _default_value;
+    ENUM_APPLIED_PRICE _ap = _direction > 0 ? PRICE_HIGH : PRICE_LOW;
     switch (_method) {
-      case 0: {
-        // @todo
-      }
+      case 0:
+        _result = _indi.GetPrice(_ap, _direction > 0 ? _indi.GetHighest(_bar_count) : _indi.GetLowest(_bar_count));
+        break;
     }
     return _result;
   }

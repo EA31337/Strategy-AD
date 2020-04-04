@@ -13,7 +13,7 @@ struct Stg_AD_EURUSD_M30_Params : Stg_AD_Params {
     AD_SignalCloseMethod = 0;
     AD_SignalCloseLevel = 0;
     AD_PriceLimitMethod = 0;
-    AD_PriceLimitLevel = 0;
+    AD_PriceLimitLevel = 2;
     AD_MaxSpread = 0;
   }
 } stg_ad_m30;

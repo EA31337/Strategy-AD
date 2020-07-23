@@ -77,7 +77,7 @@ class Stg_AD : public Strategy {
     // Initialize strategy parameters.
     ADParams ad_params(_tf);
     StgParams sparams(new Trade(_tf, _Symbol), new Indi_AD(ad_params), NULL, NULL);
-    sparams.logger.SetLevel(_log_level);
+    sparams.logger.Ptr().SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.AD_SignalOpenMethod, _params.AD_SignalOpenLevel, _params.AD_SignalOpenFilterMethod,
                        _params.AD_SignalOpenBoostMethod, _params.AD_SignalCloseMethod, _params.AD_SignalCloseLevel);

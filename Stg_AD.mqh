@@ -6,14 +6,14 @@
 // User input params.
 INPUT int AD_Shift = 0;                     // Shift (relative to the current bar, 0 - default)
 INPUT int AD_SignalOpenMethod = 0;          // Signal open method
-INPUT float AD_SignalOpenLevel = 0.0004;   // Signal open level (>0.0001)
+INPUT float AD_SignalOpenLevel = 0.0004f;   // Signal open level (>0.0001)
 INPUT int AD_SignalOpenFilterMethod = 0;    // Signal open filter method
 INPUT int AD_SignalOpenBoostMethod = 0;     // Signal open filter method
 INPUT int AD_SignalCloseMethod = 0;         // Signal close method
-INPUT float AD_SignalCloseLevel = 0.0004;  // Signal close level (>0.0001)
+INPUT float AD_SignalCloseLevel = 0.0004f;  // Signal close level (>0.0001)
 INPUT int AD_PriceLimitMethod = 0;          // Price limit method
-INPUT float AD_PriceLimitLevel = 2;        // Price limit level
-INPUT float AD_MaxSpread = 6.0;            // Max spread to trade (pips)
+INPUT float AD_PriceLimitLevel = 2;         // Price limit level
+INPUT float AD_MaxSpread = 6.0;             // Max spread to trade (pips)
 
 // Includes.
 #include <EA31337-classes/Indicators/Indi_AD.mqh>
@@ -25,14 +25,14 @@ struct Stg_AD_Params : StgParams {
   ENUM_APPLIED_PRICE AD_Applied_Price;
   int AD_Shift;
   int AD_SignalOpenMethod;
-  double AD_SignalOpenLevel;
+  float AD_SignalOpenLevel;
   int AD_SignalOpenFilterMethod;
   int AD_SignalOpenBoostMethod;
   int AD_SignalCloseMethod;
-  double AD_SignalCloseLevel;
+  float AD_SignalCloseLevel;
   int AD_PriceLimitMethod;
-  double AD_PriceLimitLevel;
-  double AD_MaxSpread;
+  float AD_PriceLimitLevel;
+  float AD_MaxSpread;
 
   // Constructor: Set default param values.
   Stg_AD_Params()
@@ -119,6 +119,6 @@ class Stg_AD : public Strategy {
         _result = _indi.GetPrice(_ap, _direction > 0 ? _indi.GetHighest(_bar_count) : _indi.GetLowest(_bar_count));
         break;
     }
-    return _result;
+    return (float)_result;
   }
 };

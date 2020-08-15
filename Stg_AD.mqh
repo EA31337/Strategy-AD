@@ -3,54 +3,46 @@
  * Implements AD strategy. Based on A/D (Accumulation/Distribution) indicator.
  */
 
+// Includes.
+#include <EA31337-classes/Indicators/Indi_AD.mqh>
+#include <EA31337-classes/Strategy.mqh>
+
 // User input params.
-INPUT int AD_Shift = 0;                     // Shift (relative to the current bar, 0 - default)
+INPUT float AD_LotSize = 0;                 // Lot size
 INPUT int AD_SignalOpenMethod = 0;          // Signal open method
-INPUT float AD_SignalOpenLevel = 0.0004f;   // Signal open level (>0.0001)
 INPUT int AD_SignalOpenFilterMethod = 0;    // Signal open filter method
+INPUT float AD_SignalOpenLevel = 0.0004f;   // Signal open level (>0.0001)
 INPUT int AD_SignalOpenBoostMethod = 0;     // Signal open filter method
 INPUT int AD_SignalCloseMethod = 0;         // Signal close method
 INPUT float AD_SignalCloseLevel = 0.0004f;  // Signal close level (>0.0001)
 INPUT int AD_PriceLimitMethod = 0;          // Price limit method
 INPUT float AD_PriceLimitLevel = 2;         // Price limit level
+INPUT int AD_TickFilterMethod = 0;          // Tick filter method
 INPUT float AD_MaxSpread = 6.0;             // Max spread to trade (pips)
+INPUT int AD_Shift = 0;                     // Shift (relative to the current bar, 0 - default)
 
-// Includes.
-#include <EA31337-classes/Indicators/Indi_AD.mqh>
-#include <EA31337-classes/Strategy.mqh>
+// Structs.
+
+// Defines struct with default user strategy values.
+struct Stg_AD_Params_Defaults : StgParams {
+  Stg_AD_Params_Defaults()
+      : StgParams(::AD_SignalOpenMethod, ::AD_SignalOpenFilterMethod, ::AD_SignalOpenLevel, ::AD_SignalOpenBoostMethod,
+                  ::AD_SignalCloseMethod, ::AD_SignalCloseLevel, ::AD_PriceLimitMethod, ::AD_PriceLimitLevel,
+                  ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift) {}
+} stg_ad_defaults;
 
 // Struct to define strategy parameters to override.
 struct Stg_AD_Params : StgParams {
-  unsigned int AD_Period;
-  ENUM_APPLIED_PRICE AD_Applied_Price;
-  int AD_Shift;
-  int AD_SignalOpenMethod;
-  float AD_SignalOpenLevel;
-  int AD_SignalOpenFilterMethod;
-  int AD_SignalOpenBoostMethod;
-  int AD_SignalCloseMethod;
-  float AD_SignalCloseLevel;
-  int AD_PriceLimitMethod;
-  float AD_PriceLimitLevel;
-  float AD_MaxSpread;
+  StgParams sparams;
 
-  // Constructor: Set default param values.
-  Stg_AD_Params()
-      : AD_Shift(::AD_Shift),
-        AD_SignalOpenMethod(::AD_SignalOpenMethod),
-        AD_SignalOpenLevel(::AD_SignalOpenLevel),
-        AD_SignalOpenFilterMethod(::AD_SignalOpenFilterMethod),
-        AD_SignalOpenBoostMethod(::AD_SignalOpenBoostMethod),
-        AD_SignalCloseMethod(::AD_SignalCloseMethod),
-        AD_SignalCloseLevel(::AD_SignalCloseLevel),
-        AD_PriceLimitMethod(::AD_PriceLimitMethod),
-        AD_PriceLimitLevel(::AD_PriceLimitLevel),
-        AD_MaxSpread(::AD_MaxSpread) {}
+  // Struct constructors.
+  Stg_AD_Params(StgParams &_sparams) : sparams(stg_ad_defaults) { sparams = _sparams; }
 };
 
 // Loads pair specific param values.
 #include "sets/EURUSD_H1.h"
 #include "sets/EURUSD_H4.h"
+#include "sets/EURUSD_H8.h"
 #include "sets/EURUSD_M1.h"
 #include "sets/EURUSD_M15.h"
 #include "sets/EURUSD_M30.h"
@@ -62,22 +54,21 @@ class Stg_AD : public Strategy {
 
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
-    Stg_AD_Params _params;
+    StgParams _stg_params(stg_ad_defaults);
     if (!Terminal::IsOptimization()) {
-      SetParamsByTf<Stg_AD_Params>(_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
-                                   stg_ad_h4);
+      SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
+                               stg_ad_h8);
     }
-    // Initialize strategy parameters.
+    // Initialize indicator.
     ADParams ad_params(_tf);
-    StgParams sparams(new Trade(_tf, _Symbol), new Indi_AD(ad_params), NULL, NULL);
-    sparams.logger.Ptr().SetLevel(_log_level);
-    sparams.SetMagicNo(_magic_no);
-    sparams.SetSignals(_params.AD_SignalOpenMethod, _params.AD_SignalOpenLevel, _params.AD_SignalOpenFilterMethod,
-                       _params.AD_SignalOpenBoostMethod, _params.AD_SignalCloseMethod, _params.AD_SignalCloseLevel);
-    sparams.SetPriceLimits(_params.AD_PriceLimitMethod, _params.AD_PriceLimitLevel);
-    sparams.SetMaxSpread(_params.AD_MaxSpread);
+    _stg_params.SetIndicator(new Indi_AD(ad_params));
+    // Initialize strategy parameters.
+    _stg_params.GetLog().SetLevel(_log_level);
+    _stg_params.SetMagicNo(_magic_no);
+    _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
-    Strategy *_strat = new Stg_AD(sparams, "AD");
+    Strategy *_strat = new Stg_AD(_stg_params, "AD");
+    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 

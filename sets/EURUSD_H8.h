@@ -4,9 +4,9 @@
  */
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_AD_Params_M1 : StgParams {
+struct Stg_AD_Params_H8 : StgParams {
   // Struct constructor.
-  Stg_AD_Params_M1() : StgParams(stg_ad_defaults) {
+  Stg_AD_Params_H8() : StgParams(stg_ad_defaults) {
     lot_size = 0;
     signal_open_method = 0;
     signal_open_filter = 1;
@@ -19,4 +19,4 @@ struct Stg_AD_Params_M1 : StgParams {
     tick_filter_method = 1;
     max_spread = 0;
   }
-} stg_ad_m1;
+} stg_ad_h8;

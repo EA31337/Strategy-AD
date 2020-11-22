@@ -15,8 +15,8 @@ INPUT float AD_SignalOpenLevel = 0.0004f;   // Signal open level (>0.0001)
 INPUT int AD_SignalOpenBoostMethod = 0;     // Signal open filter method
 INPUT int AD_SignalCloseMethod = 0;         // Signal close method
 INPUT float AD_SignalCloseLevel = 0.0004f;  // Signal close level (>0.0001)
-INPUT int AD_PriceLimitMethod = 0;          // Price limit method
-INPUT float AD_PriceLimitLevel = 2;         // Price limit level
+INPUT int AD_PriceStopMethod = 0;           // Price stop method
+INPUT float AD_PriceStopLevel = 2;          // Price stop level
 INPUT int AD_TickFilterMethod = 0;          // Tick filter method
 INPUT float AD_MaxSpread = 6.0;             // Max spread to trade (pips)
 INPUT int AD_Shift = 0;                     // Shift (relative to the current bar, 0 - default)
@@ -27,7 +27,7 @@ INPUT int AD_Shift = 0;                     // Shift (relative to the current ba
 struct Stg_AD_Params_Defaults : StgParams {
   Stg_AD_Params_Defaults()
       : StgParams(::AD_SignalOpenMethod, ::AD_SignalOpenFilterMethod, ::AD_SignalOpenLevel, ::AD_SignalOpenBoostMethod,
-                  ::AD_SignalCloseMethod, ::AD_SignalCloseLevel, ::AD_PriceLimitMethod, ::AD_PriceLimitLevel,
+                  ::AD_SignalCloseMethod, ::AD_SignalCloseLevel, ::AD_PriceStopMethod, ::AD_PriceStopLevel,
                   ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift) {}
 } stg_ad_defaults;
 
@@ -95,9 +95,9 @@ class Stg_AD : public Strategy {
   }
 
   /**
-   * Gets price limit value for profit take or stop loss.
+   * Gets price stop value for profit take or stop loss.
    */
-  float PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
+  float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
     Indicator *_indi = Data();
     double _trail = _level * Market().GetPipSize();
     int _bar_count = (int)_level * 10;

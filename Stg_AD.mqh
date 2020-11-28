@@ -106,7 +106,7 @@ class Stg_AD : public Strategy {
     double _result = _default_value;
     ENUM_APPLIED_PRICE _ap = _direction > 0 ? PRICE_HIGH : PRICE_LOW;
     switch (_method) {
-      case 0:
+      case 1:
         _result = _indi.GetPrice(_ap, _direction > 0 ? _indi.GetHighest(_bar_count) : _indi.GetLowest(_bar_count));
         break;
     }

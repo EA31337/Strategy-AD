@@ -82,12 +82,12 @@ class Stg_AD : public Strategy {
     switch (_cmd) {
       // Buy: indicator growth at downtrend.
       case ORDER_TYPE_BUY:
-        _result &= _indi[CURR].value[0] >= _indi[PREV].value[0] + _level && Chart().GetClose(0) <= Chart().GetClose(1);
+        _result &= _indi[CURR][0] >= _indi[PREV][0] + _level && Chart().GetClose(0) <= Chart().GetClose(1);
         if (METHOD(_method, 0)) _result &= Open[CURR] > Close[CURR];
         break;
       // Sell: indicator fall at uptrend.
       case ORDER_TYPE_SELL:
-        _result &= _indi[CURR].value[0] <= _indi[PREV].value[0] - _level && Chart().GetClose(0) >= Chart().GetClose(1);
+        _result &= _indi[CURR][0] <= _indi[PREV][0] - _level && Chart().GetClose(0) >= Chart().GetClose(1);
         if (METHOD(_method, 0)) _result &= Open[CURR] < Close[CURR];
         break;
     }

@@ -3,10 +3,6 @@
  * Implements AD strategy. Based on A/D (Accumulation/Distribution) indicator.
  */
 
-// Includes.
-#include <EA31337-classes/Indicators/Indi_AD.mqh>
-#include <EA31337-classes/Strategy.mqh>
-
 // User input params.
 INPUT float AD_LotSize = 0;                 // Lot size
 INPUT int AD_SignalOpenMethod = 0;          // Signal open method

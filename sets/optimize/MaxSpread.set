@@ -1,0 +1,7 @@
+; Optimize max spread param.
+AD_MaxSpread,1=10
+AD_MaxSpread,2=10
+AD_MaxSpread,3=40
+AD_MaxSpread,F=1
+AD_SignalOpenFilterMethod=1
+AD_TickFilterMethod=1

@@ -1,0 +1,7 @@
+; Optimize price stop method param.
+AD_PriceStopMethod,1=0
+AD_PriceStopMethod,2=1
+AD_PriceStopMethod,3=4
+AD_PriceStopMethod,F=1
+AD_SignalOpenFilterMethod=1
+AD_TickFilterMethod=1

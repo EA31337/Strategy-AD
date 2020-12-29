@@ -1,0 +1,7 @@
+; Optimize signal close level param.
+AD_SignalCloseLevel,1=10
+AD_SignalCloseLevel,2=5
+AD_SignalCloseLevel,3=40
+AD_SignalCloseLevel,F=1
+AD_SignalOpenFilterMethod=1
+AD_TickFilterMethod=1

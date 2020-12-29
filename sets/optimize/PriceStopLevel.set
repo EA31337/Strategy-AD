@@ -1,0 +1,7 @@
+; Optimize price stop level param.
+AD_PriceStopLevel,1=10
+AD_PriceStopLevel,2=5
+AD_PriceStopLevel,3=40
+AD_PriceStopLevel,F=1
+AD_SignalOpenFilterMethod=1
+AD_TickFilterMethod=1

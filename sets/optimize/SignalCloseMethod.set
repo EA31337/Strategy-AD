@@ -1,0 +1,7 @@
+; Optimize signal close method param.
+AD_SignalCloseMethod,1=-4
+AD_SignalCloseMethod,2=1
+AD_SignalCloseMethod,3=4
+AD_SignalCloseMethod,F=1
+AD_SignalOpenFilterMethod=1
+AD_TickFilterMethod=1

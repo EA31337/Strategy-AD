@@ -173,6 +173,7 @@ jobs:
         with:
           branch: dev-optimize-${{ env.PF }}pf-${{ env.DD }}dd-${{ env.TT }}tt
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
       - name: Re-pull on failure
         if: ${{ failure() }}
         run: git pull origin ${{ github.ref }} --autostash --rebase -X ours

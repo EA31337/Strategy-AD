@@ -87,6 +87,7 @@ jobs:
           OptVerbose: true
           SetFile: ${{ github.workspace }}/sets/PriceStopMethod.set
           TestExpert: "Stg_AD"
+          TestLimitOpts: maxdrawdown_enable=1,maxdrawdown=80
           TestPeriod: ${{ matrix.tf }}
           TestReportName: Report-${{ matrix.pair }}-${{ matrix.tf }}
       - name: Upload result files

@@ -4,19 +4,19 @@
  */
 
 // User input params.
-INPUT float AD_LotSize = 0;                 // Lot size
-INPUT int AD_SignalOpenMethod = 0;          // Signal open method
-INPUT int AD_SignalOpenFilterMethod = 0;    // Signal open filter method
-INPUT float AD_SignalOpenLevel = 0.0004f;   // Signal open level (>0.0001)
-INPUT int AD_SignalOpenBoostMethod = 0;     // Signal open filter method
-INPUT int AD_SignalCloseMethod = 0;         // Signal close method
-INPUT float AD_SignalCloseLevel = 0.0004f;  // Signal close level (>0.0001)
-INPUT int AD_PriceStopMethod = 0;           // Price stop method
-INPUT float AD_PriceStopLevel = 2;          // Price stop level
-INPUT int AD_TickFilterMethod = 0;          // Tick filter method
-INPUT float AD_MaxSpread = 6.0;             // Max spread to trade (pips)
-INPUT int AD_Shift = 0;                     // Shift (relative to the current bar, 0 - default)
-INPUT int AD_OrderCloseTime = -10;          // Order close time in mins (>0) or bars (<0)
+INPUT float AD_LotSize = 0;               // Lot size
+INPUT int AD_SignalOpenMethod = 0;        // Signal open method
+INPUT int AD_SignalOpenFilterMethod = 0;  // Signal open filter method (-7-7)
+INPUT float AD_SignalOpenLevel = 0.0f;    // Signal open level
+INPUT int AD_SignalOpenBoostMethod = 0;   // Signal open filter method
+INPUT int AD_SignalCloseMethod = 0;       // Signal close method
+INPUT float AD_SignalCloseLevel = 0.0f;   // Signal close level
+INPUT int AD_PriceStopMethod = 0;         // Price stop method
+INPUT float AD_PriceStopLevel = 0;        // Price stop level
+INPUT int AD_TickFilterMethod = 0;        // Tick filter method
+INPUT float AD_MaxSpread = 0;             // Max spread to trade (pips)
+INPUT int AD_Shift = 0;                   // Shift (relative to the current bar, 0 - default)
+INPUT int AD_OrderCloseTime = -10;        // Order close time in mins (>0) or bars (<0)
 
 // Structs.
 
@@ -52,10 +52,8 @@ class Stg_AD : public Strategy {
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
     StgParams _stg_params(stg_ad_defaults);
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
-                               stg_ad_h8);
-    }
+    SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
+                             stg_ad_h8);
     // Initialize indicator.
     ADParams ad_params(_tf);
     _stg_params.SetIndicator(new Indi_AD(ad_params));
@@ -76,17 +74,36 @@ class Stg_AD : public Strategy {
     Indicator *_indi = Data();
     bool _is_valid = _indi[CURR].IsValid();
     bool _result = _is_valid;
-    switch (_cmd) {
-      // Buy: indicator growth at downtrend.
-      case ORDER_TYPE_BUY:
-        _result &= _indi[CURR][0] >= _indi[PREV][0] + _level && Chart().GetClose(0) <= Chart().GetClose(1);
-        if (METHOD(_method, 0)) _result &= Open[CURR] > Close[CURR];
-        break;
-      // Sell: indicator fall at uptrend.
-      case ORDER_TYPE_SELL:
-        _result &= _indi[CURR][0] <= _indi[PREV][0] - _level && Chart().GetClose(0) >= Chart().GetClose(1);
-        if (METHOD(_method, 0)) _result &= Open[CURR] < Close[CURR];
-        break;
+    if (_is_valid) {
+      double _change_pc = Math::ChangeInPct(_indi[1][0], _indi[0][0]);
+      switch (_cmd) {
+        case ORDER_TYPE_BUY:
+          // Buy: if the indicator is above zero and a column is green.
+          // Buy: indicator growth at downtrend.
+          _result &= _indi[0][0] > _indi[1][0] && _change_pc > _level;
+          if (_method != 0) {
+            // ... 2 consecutive columns are above level.
+            if (METHOD(_method, 0)) _result &= Math::ChangeInPct(_indi[2][0], _indi[1][0]) > _level;
+            // ... 3 consecutive columns are green.
+            if (METHOD(_method, 1)) _result &= _indi[2][0] > _indi[3][0];
+            // ... 4 consecutive columns are green.
+            if (METHOD(_method, 2)) _result &= _indi[3][0] > _indi[4][0];
+          }
+          break;
+        case ORDER_TYPE_SELL:
+          // Sell: if the indicator is below zero and a column is red.
+          // Sell: indicator fall at uptrend.
+          _result &= _indi[0][0] < _indi[1][0] && _change_pc < _level;
+          if (_method != 0) {
+            // ... 2 consecutive columns are below level.
+            if (METHOD(_method, 0)) _result &= Math::ChangeInPct(_indi[2][0], _indi[1][0]) < _level;
+            // ... 3 consecutive columns are red.
+            if (METHOD(_method, 1)) _result &= _indi[2][0] < _indi[3][0];
+            // ... 4 consecutive columns are red.
+            if (METHOD(_method, 2)) _result &= _indi[3][0] < _indi[4][0];
+          }
+          break;
+      }
     }
     return _result;
   }

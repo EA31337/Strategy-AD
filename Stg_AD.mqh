@@ -16,6 +16,7 @@ INPUT float AD_PriceStopLevel = 2;          // Price stop level
 INPUT int AD_TickFilterMethod = 0;          // Tick filter method
 INPUT float AD_MaxSpread = 6.0;             // Max spread to trade (pips)
 INPUT int AD_Shift = 0;                     // Shift (relative to the current bar, 0 - default)
+INPUT int AD_OrderCloseTime = -10;          // Order close time in mins (>0) or bars (<0)
 
 // Structs.
 
@@ -24,7 +25,7 @@ struct Stg_AD_Params_Defaults : StgParams {
   Stg_AD_Params_Defaults()
       : StgParams(::AD_SignalOpenMethod, ::AD_SignalOpenFilterMethod, ::AD_SignalOpenLevel, ::AD_SignalOpenBoostMethod,
                   ::AD_SignalCloseMethod, ::AD_SignalCloseLevel, ::AD_PriceStopMethod, ::AD_PriceStopLevel,
-                  ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift) {}
+                  ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift, ::AD_OrderCloseTime) {}
 } stg_ad_defaults;
 
 // Struct to define strategy parameters to override.
@@ -95,16 +96,22 @@ class Stg_AD : public Strategy {
    */
   float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
     Indicator *_indi = Data();
-    double _trail = _level * Market().GetPipSize();
+    Chart *_chart = sparams.GetChart();
+    double _trail = _level * _chart.GetPipSize();
     int _bar_count = (int)_level * 10;
     int _direction = Order::OrderDirection(_cmd, _mode);
-    double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
+    double _change_pc = Math::ChangeInPct(_indi[1][0], _indi[0][0]);
+    double _default_value = _chart.GetCloseOffer(_cmd) + _trail * _method * _direction;
+    double _price_offer = _chart.GetOpenOffer(_cmd);
     double _result = _default_value;
     ENUM_APPLIED_PRICE _ap = _direction > 0 ? PRICE_HIGH : PRICE_LOW;
     switch (_method) {
       case 1:
         _result = _indi.GetPrice(
             _ap, _direction > 0 ? _indi.GetHighest<double>(_bar_count) : _indi.GetLowest<double>(_bar_count));
+        break;
+      case 2:
+        _result = Math::ChangeByPct(_price_offer, (float)_change_pc / _level / 100);
         break;
     }
     return (float)_result;

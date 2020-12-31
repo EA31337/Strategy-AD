@@ -8,7 +8,7 @@ struct Stg_AD_Params_M30 : StgParams {
   // Struct constructor.
   Stg_AD_Params_M30() : StgParams(stg_ad_defaults) {
     lot_size = 0;
-    signal_open_method = 0;
+    signal_open_method = -1;
     signal_open_filter = 1;
     signal_open_level = 1;
     signal_open_boost = 0;

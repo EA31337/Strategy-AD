@@ -16,7 +16,7 @@ INPUT float AD_PriceStopLevel = 0;        // Price stop level
 INPUT int AD_TickFilterMethod = 0;        // Tick filter method
 INPUT float AD_MaxSpread = 0;             // Max spread to trade (pips)
 INPUT int AD_Shift = 0;                   // Shift (relative to the current bar, 0 - default)
-INPUT int AD_OrderCloseTime = -10;        // Order close time in mins (>0) or bars (<0)
+INPUT int AD_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
 
 // Structs.
 

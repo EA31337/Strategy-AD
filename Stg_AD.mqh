@@ -6,15 +6,15 @@
 // User input params.
 INPUT float AD_LotSize = 0;               // Lot size
 INPUT int AD_SignalOpenMethod = 0;        // Signal open method
-INPUT int AD_SignalOpenFilterMethod = 0;  // Signal open filter method (-7-7)
+INPUT int AD_SignalOpenFilterMethod = 1;  // Signal open filter method (-7-7)
 INPUT float AD_SignalOpenLevel = 0.0f;    // Signal open level
 INPUT int AD_SignalOpenBoostMethod = 0;   // Signal open filter method
 INPUT int AD_SignalCloseMethod = 0;       // Signal close method
 INPUT float AD_SignalCloseLevel = 0.0f;   // Signal close level
 INPUT int AD_PriceStopMethod = 0;         // Price stop method
 INPUT float AD_PriceStopLevel = 0;        // Price stop level
-INPUT int AD_TickFilterMethod = 0;        // Tick filter method
-INPUT float AD_MaxSpread = 0;             // Max spread to trade (pips)
+INPUT int AD_TickFilterMethod = 1;        // Tick filter method
+INPUT float AD_MaxSpread = 4.0;           // Max spread to trade (pips)
 INPUT int AD_Shift = 0;                   // Shift (relative to the current bar, 0 - default)
 INPUT int AD_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
 

@@ -13,7 +13,7 @@ struct Stg_AD_Params_M15 : StgParams {
     signal_open_level = 20;
     signal_open_boost = 0;
     signal_close_method = 1;
-    signal_close_level = 1;
+    signal_close_level = 35;
     price_stop_method = 0;
     price_stop_level = 2;
     tick_filter_method = 1;

@@ -17,10 +17,10 @@ struct Stg_AD_Params_{{ Timeframe }} : StgParams {
     lot_size = {{ AD_LotSize | default(0) }};
     signal_open_method = {{ AD_SignalOpenMethod | default(0) }};
     signal_open_filter = {{ AD_SignalOpenFilterMethod | default(1) }};
-    signal_open_level = {{ AD_SignalOpenLevel | default(0) }};
+    signal_open_level = (float){{ AD_SignalOpenLevel | default(0) }};
     signal_open_boost = {{ AD_SignalOpenBoostMethod | default(0) }};
     signal_close_method = {{ AD_SignalCloseMethod | default(0) }};
-    signal_close_level = {{ AD_SignalCloseLevel | default(0) }};
+    signal_close_level = (float){{ AD_SignalCloseLevel | default(0) }};
     price_stop_method = {{ AD_PriceStopMethod | default(0) }};
     price_stop_level = {{ AD_SignalCloseLevel | default(1) }};
     tick_filter_method = {{ AD_TickFilterMethod  | default(1) }};

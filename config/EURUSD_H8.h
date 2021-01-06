@@ -3,6 +3,11 @@
  * Defines default strategy parameter values for the given timeframe.
  */
 
+// Defines indicator's parameter values for the given pair symbol and timeframe.
+struct ADParams_H8 : ADParams {
+  ADParams_H8() : ADParams(indi_ad_defaults, PERIOD_H8) { shift = 0; }
+} indi_ad_h8;
+
 // Defines strategy's parameter values for the given pair symbol and timeframe.
 struct Stg_AD_Params_H8 : StgParams {
   // Struct constructor.

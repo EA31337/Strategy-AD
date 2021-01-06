@@ -17,8 +17,15 @@ INPUT int AD_TickFilterMethod = 1;        // Tick filter method
 INPUT float AD_MaxSpread = 4.0;           // Max spread to trade (pips)
 INPUT int AD_Shift = 0;                   // Shift (relative to the current bar, 0 - default)
 INPUT int AD_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
+INPUT string __AD_Indi_AD_Parameters__ = "-- AD strategy: AD indicator params --";  // >>> AD strategy: AD indicator <<<
+INPUT int AD_Indi_AD_Shift = 0;                                                     // Shift
 
 // Structs.
+
+// Defines struct with default user indicator values.
+struct Indi_AD_Params_Defaults : ADParams {
+  Indi_AD_Params_Defaults() : ADParams(::AD_Indi_AD_Shift) {}
+} indi_ad_defaults;
 
 // Defines struct with default user strategy values.
 struct Stg_AD_Params_Defaults : StgParams {

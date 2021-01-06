@@ -3,6 +3,11 @@
  * Defines default strategy parameter values for the given timeframe.
  */
 
+// Defines indicator's parameter values for the given pair symbol and timeframe.
+struct ADParams_M15 : ADParams {
+  ADParams_M15() : ADParams(indi_ad_defaults, PERIOD_M15) { shift = 0; }
+} indi_ad_m15;
+
 // Defines strategy's parameter values for the given pair symbol and timeframe.
 struct Stg_AD_Params_M15 : StgParams {
   // Struct constructor.

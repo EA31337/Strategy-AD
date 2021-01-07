@@ -4,8 +4,8 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_AD_Params_{{ Timeframe }} : Indi_AD_Params {
-  Indi_AD_Params_{{ Timeframe }}() : Indi_AD_Params(indi_ad_defaults, PERIOD_{{ Timeframe }}) {
+struct Indi_AD_Params_{{ Timeframe }} : ADParams {
+  Indi_AD_Params_{{ Timeframe }}() : ADParams(indi_ad_defaults, PERIOD_{{ Timeframe }}) {
     shift = {{ AD_Shift | default(0) }};
   }
 } indi_ad_{{ Timeframe | lower }};

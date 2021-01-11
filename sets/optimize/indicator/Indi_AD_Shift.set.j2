@@ -2,4 +2,6 @@ AD_Indi_AD_Shift,1=0
 AD_Indi_AD_Shift,2=1
 AD_Indi_AD_Shift,3=4
 AD_Indi_AD_Shift,F=1
-AD_Indi_AD_Shift={{ shift | default(0) }}
+AD_Indi_AD_Shift={{ (shift | default(0) | int) }}
+AD_SignalOpenFilterMethod=1
+AD_TickFilterMethod=1

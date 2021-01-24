@@ -73,7 +73,6 @@ class Stg_AD : public Strategy {
     _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_AD(_stg_params, "AD");
-    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 

@@ -60,10 +60,10 @@ class Stg_AD : public Strategy {
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
     StgParams _stg_params(stg_ad_defaults);
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
-                               stg_ad_h8);
-    }
+#ifdef __config__
+    SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
+                             stg_ad_h8);
+#endif
     // Initialize indicator.
     ADParams ad_params(_tf);
     _stg_params.SetIndicator(new Indi_AD(ad_params));

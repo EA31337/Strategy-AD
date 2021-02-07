@@ -13,14 +13,14 @@ struct Stg_AD_Params_M30 : StgParams {
   // Struct constructor.
   Stg_AD_Params_M30() : StgParams(stg_ad_defaults) {
     lot_size = 0;
-    signal_open_method = -4;
+    signal_open_method = 1;
     signal_open_filter = 2;
-    signal_open_level = (float)0.1;
+    signal_open_level = (float)7.0;
     signal_open_boost = 1;
-    signal_close_method = 0;
-    signal_close_level = (float)0.1;
+    signal_close_method = -2;
+    signal_close_level = (float)10;
     price_stop_method = 0;
-    price_stop_level = (float)2;
+    price_stop_level = (float)10;
     tick_filter_method = 1;
     max_spread = 0;
   }

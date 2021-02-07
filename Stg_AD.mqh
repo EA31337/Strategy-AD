@@ -4,19 +4,20 @@
  */
 
 // User input params.
-INPUT float AD_LotSize = 0;               // Lot size
-INPUT int AD_SignalOpenMethod = 0;        // Signal open method
-INPUT int AD_SignalOpenFilterMethod = 1;  // Signal open filter method (-7-7)
-INPUT float AD_SignalOpenLevel = 0.0f;    // Signal open level
-INPUT int AD_SignalOpenBoostMethod = 0;   // Signal open filter method
-INPUT int AD_SignalCloseMethod = 0;       // Signal close method
-INPUT float AD_SignalCloseLevel = 0.0f;   // Signal close level
-INPUT int AD_PriceStopMethod = 0;         // Price stop method
-INPUT float AD_PriceStopLevel = 0;        // Price stop level
-INPUT int AD_TickFilterMethod = 1;        // Tick filter method
-INPUT float AD_MaxSpread = 4.0;           // Max spread to trade (pips)
-INPUT int AD_Shift = 0;                   // Shift (relative to the current bar, 0 - default)
-INPUT int AD_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
+INPUT string __AD_Parameters__ = "-- AD strategy params --";  // >>> AD <<<
+INPUT float AD_LotSize = 0;                                   // Lot size
+INPUT int AD_SignalOpenMethod = 0;                            // Signal open method
+INPUT int AD_SignalOpenFilterMethod = 1;                      // Signal open filter method (-7-7)
+INPUT float AD_SignalOpenLevel = 0.0f;                        // Signal open level
+INPUT int AD_SignalOpenBoostMethod = 0;                       // Signal open filter method
+INPUT int AD_SignalCloseMethod = 0;                           // Signal close method
+INPUT float AD_SignalCloseLevel = 0.0f;                       // Signal close level
+INPUT int AD_PriceStopMethod = 0;                             // Price stop method
+INPUT float AD_PriceStopLevel = 0;                            // Price stop level
+INPUT int AD_TickFilterMethod = 1;                            // Tick filter method
+INPUT float AD_MaxSpread = 4.0;                               // Max spread to trade (pips)
+INPUT int AD_Shift = 0;                                       // Shift (relative to the current bar, 0 - default)
+INPUT int AD_OrderCloseTime = -20;                            // Order close time in mins (>0) or bars (<0)
 INPUT string __AD_Indi_AD_Parameters__ = "-- AD strategy: AD indicator params --";  // >>> AD strategy: AD indicator <<<
 INPUT int AD_Indi_AD_Shift = 0;                                                     // Shift
 
@@ -59,10 +60,10 @@ class Stg_AD : public Strategy {
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
     StgParams _stg_params(stg_ad_defaults);
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
-                               stg_ad_h8);
-    }
+#ifdef __config__
+    SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
+                             stg_ad_h8);
+#endif
     // Initialize indicator.
     ADParams ad_params(_tf);
     _stg_params.SetIndicator(new Indi_AD(ad_params));
@@ -72,7 +73,6 @@ class Stg_AD : public Strategy {
     _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_AD(_stg_params, "AD");
-    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 

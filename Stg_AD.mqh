@@ -55,7 +55,7 @@ struct Stg_AD_Params : StgParams {
 
 class Stg_AD : public Strategy {
  public:
-  Stg_AD(StgParams &_params, string _name) : Strategy(_params, _name) {}
+  Stg_AD(StgParams &_params, Trade *_trade = NULL, string _name = "") : Strategy(_params, _trade, _name) {}
 
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
@@ -67,12 +67,9 @@ class Stg_AD : public Strategy {
     // Initialize indicator.
     ADParams ad_params(_tf);
     _stg_params.SetIndicator(new Indi_AD(ad_params));
-    // Initialize strategy parameters.
-    _stg_params.GetLog().SetLevel(_log_level);
-    _stg_params.SetMagicNo(_magic_no);
-    _stg_params.SetTf(_tf, _Symbol);
-    // Initialize strategy instance.
-    Strategy *_strat = new Stg_AD(_stg_params, "AD");
+    // Initialize Strategy instance.
+    TradeParams _tparams(_magic_no, _log_level);
+    Strategy *_strat = new Stg_AD(_stg_params, new Trade(new Chart(_tf, _Symbol)), "AD");
     return _strat;
   }
 
@@ -115,7 +112,7 @@ class Stg_AD : public Strategy {
    */
   float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0f) {
     Indicator *_indi = GetIndicator();
-    Chart *_chart = sparams.GetChart();
+    Chart *_chart = trade.GetChart();
     double _trail = _level * _chart.GetPipSize();
     int _bar_count = (int)_level * 10;
     int _direction = Order::OrderDirection(_cmd, _mode);

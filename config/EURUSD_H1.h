@@ -17,7 +17,7 @@ struct Stg_AD_Params_H1 : StgParams {
     signal_open_filter = 32;
     signal_open_level = (float)0.1;
     signal_open_boost = 0;
-    signal_close_method = 0;
+    signal_close_method = 42;
     signal_close_level = (float)0.1;
     price_stop_method = 0;
     price_stop_level = (float)2;

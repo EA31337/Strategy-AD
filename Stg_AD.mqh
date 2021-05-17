@@ -7,14 +7,14 @@
 INPUT string __AD_Parameters__ = "-- AD strategy params --";  // >>> AD <<<
 INPUT float AD_LotSize = 0;                                   // Lot size
 INPUT int AD_SignalOpenMethod = 0;                            // Signal open method
-INPUT int AD_SignalOpenFilterMethod = 1;                      // Signal open filter method (-7-7)
+INPUT int AD_SignalOpenFilterMethod = 32;                     // Signal open filter method (-127-127)
 INPUT float AD_SignalOpenLevel = 0.0f;                        // Signal open level
 INPUT int AD_SignalOpenBoostMethod = 0;                       // Signal open filter method
 INPUT int AD_SignalCloseMethod = 0;                           // Signal close method
 INPUT float AD_SignalCloseLevel = 0.0f;                       // Signal close level
 INPUT int AD_PriceStopMethod = 0;                             // Price stop method
 INPUT float AD_PriceStopLevel = 0;                            // Price stop level
-INPUT int AD_TickFilterMethod = 1;                            // Tick filter method
+INPUT int AD_TickFilterMethod = 32;                           // Tick filter method
 INPUT float AD_MaxSpread = 4.0;                               // Max spread to trade (pips)
 INPUT short AD_Shift = 0;                                     // Shift (relative to the current bar, 0 - default)
 INPUT int AD_OrderCloseTime = -20;                            // Order close time in mins (>0) or bars (<0)
@@ -83,26 +83,19 @@ class Stg_AD : public Strategy {
     bool _is_valid = _indi[CURR].IsValid();
     bool _result = _is_valid;
     if (_is_valid) {
+      IndicatorSignal _signals = _indi.GetSignals(4, _shift);
       switch (_cmd) {
-        // Buy: indicator growth at downtrend.
         case ORDER_TYPE_BUY:
-          _result &= _indi.IsIncByPct(_level, 0, 0, 3);
+          // Buy: if the indicator values are increasing.
           _result &= _indi.IsIncreasing(3);
-          if (_result && _method != 0) {
-            if (METHOD(_method, 0)) _result &= _indi.IsIncreasing(2, 0, 3);
-            if (METHOD(_method, 1)) _result &= _indi.IsIncreasing(2, 0, 5);
-            if (METHOD(_method, 2)) _result &= _indi[3][0] > _indi[4][0];
-          }
+          _result &= _indi.IsIncByPct(_level, 0, 0, 3);
+          _result &= _method > 0 ? _signals.CheckSignals(_method) : _signals.CheckSignalsAll(-_method);
           break;
-        // Sell: indicator fall at uptrend.
         case ORDER_TYPE_SELL:
-          _result &= _indi.IsDecByPct(-_level, 0, 0, 3);
+          // Sell: if the indicator values are decreasing.
           _result &= _indi.IsDecreasing(3);
-          if (_result && _method != 0) {
-            if (METHOD(_method, 0)) _result &= _indi.IsIncreasing(2, 0, 3);
-            if (METHOD(_method, 1)) _result &= _indi.IsIncreasing(2, 0, 5);
-            if (METHOD(_method, 2)) _result &= _indi[3][0] < _indi[4][0];
-          }
+          _result &= _indi.IsDecByPct(-_level, 0, 0, 3);
+          _result &= _method > 0 ? _signals.CheckSignals(_method) : _signals.CheckSignalsAll(-_method);
           break;
       }
     }

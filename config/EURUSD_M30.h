@@ -17,7 +17,7 @@ struct Stg_AD_Params_M30 : StgParams {
     signal_open_filter = 32;
     signal_open_level = (float)7.0;
     signal_open_boost = 1;
-    signal_close_method = -2;
+    signal_close_method = 42;
     signal_close_level = (float)10;
     price_stop_method = 0;
     price_stop_level = (float)10;

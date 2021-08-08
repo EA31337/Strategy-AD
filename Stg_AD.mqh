@@ -18,6 +18,8 @@ INPUT float AD_PriceStopLevel = 0;         // Price stop level
 INPUT int AD_TickFilterMethod = 32;        // Tick filter method
 INPUT float AD_MaxSpread = 4.0;            // Max spread to trade (pips)
 INPUT short AD_Shift = 0;                  // Shift (relative to the current bar, 0 - default)
+INPUT float AD_OrderCloseLoss = 0;         // Order close loss
+INPUT float AD_OrderCloseProfit = 0;       // Order close profit
 INPUT int AD_OrderCloseTime = -20;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("AD strategy: AD indicator params");
 INPUT int AD_Indi_AD_Shift = 0;  // Shift
@@ -34,7 +36,11 @@ struct Stg_AD_Params_Defaults : StgParams {
   Stg_AD_Params_Defaults()
       : StgParams(::AD_SignalOpenMethod, ::AD_SignalOpenFilterMethod, ::AD_SignalOpenLevel, ::AD_SignalOpenBoostMethod,
                   ::AD_SignalCloseMethod, ::AD_SignalCloseFilter, ::AD_SignalCloseLevel, ::AD_PriceStopMethod,
-                  ::AD_PriceStopLevel, ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift, ::AD_OrderCloseTime) {}
+                  ::AD_PriceStopLevel, ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift) {
+    Set(STRAT_PARAM_OCL, AD_OrderCloseLoss);
+    Set(STRAT_PARAM_OCP, AD_OrderCloseProfit);
+    Set(STRAT_PARAM_OCT, AD_OrderCloseTime);
+  }
 } stg_ad_defaults;
 
 // Struct to define strategy parameters to override.

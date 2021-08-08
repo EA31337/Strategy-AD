@@ -11,6 +11,7 @@ INPUT int AD_SignalOpenFilterMethod = 32;  // Signal open filter method (-127-12
 INPUT float AD_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int AD_SignalOpenBoostMethod = 0;    // Signal open filter method
 INPUT int AD_SignalCloseMethod = 2;        // Signal close method
+INPUT int AD_SignalCloseFilter = 0;        // Signal close filter (-127-127)
 INPUT float AD_SignalCloseLevel = 0.0f;    // Signal close level
 INPUT int AD_PriceStopMethod = 1;          // Price stop method
 INPUT float AD_PriceStopLevel = 0;         // Price stop level
@@ -32,8 +33,8 @@ struct Indi_AD_Params_Defaults : ADParams {
 struct Stg_AD_Params_Defaults : StgParams {
   Stg_AD_Params_Defaults()
       : StgParams(::AD_SignalOpenMethod, ::AD_SignalOpenFilterMethod, ::AD_SignalOpenLevel, ::AD_SignalOpenBoostMethod,
-                  ::AD_SignalCloseMethod, ::AD_SignalCloseLevel, ::AD_PriceStopMethod, ::AD_PriceStopLevel,
-                  ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift, ::AD_OrderCloseTime) {}
+                  ::AD_SignalCloseMethod, ::AD_SignalCloseFilter, ::AD_SignalCloseLevel, ::AD_PriceStopMethod,
+                  ::AD_PriceStopLevel, ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift, ::AD_OrderCloseTime) {}
 } stg_ad_defaults;
 
 // Struct to define strategy parameters to override.

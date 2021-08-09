@@ -8,6 +8,7 @@ INPUT_GROUP("AD strategy: strategy params");
 INPUT float AD_LotSize = 0;                // Lot size
 INPUT int AD_SignalOpenMethod = 2;         // Signal open method
 INPUT int AD_SignalOpenFilterMethod = 32;  // Signal open filter method (-127-127)
+INPUT int AD_SignalOpenFilterTime = 6;     // Signal open filter time (-127-127)
 INPUT float AD_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int AD_SignalOpenBoostMethod = 0;    // Signal open filter method
 INPUT int AD_SignalCloseMethod = 2;        // Signal close method
@@ -40,6 +41,7 @@ struct Stg_AD_Params_Defaults : StgParams {
     Set(STRAT_PARAM_OCL, AD_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, AD_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, AD_OrderCloseTime);
+    Set(STRAT_PARAM_SOFT, AD_SignalOpenFilterTime);
   }
 } stg_ad_defaults;
 

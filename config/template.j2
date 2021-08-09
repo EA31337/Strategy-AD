@@ -14,7 +14,7 @@ struct Stg_AD_Params_{{ Timeframe }} : StgParams {
   Stg_AD_Params_{{ Timeframe }}() : StgParams(stg_ad_defaults) {
     lot_size = {{ AD_LotSize | default(0) }};
     signal_open_method = {{ AD_SignalOpenMethod | default(0) }};
-    signal_open_filter = {{ AD_SignalOpenFilterMethod | default(1) }};
+    signal_open_filter_method = {{ AD_SignalOpenFilterMethod | default(1) }};
     signal_open_level = (float){{ AD_SignalOpenLevel | default(0) }};
     signal_open_boost = {{ AD_SignalOpenBoostMethod | default(0) }};
     signal_close_method = {{ AD_SignalCloseMethod | default(0) }};

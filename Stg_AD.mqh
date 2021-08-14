@@ -53,6 +53,7 @@ struct Stg_AD_Params : StgParams {
   Stg_AD_Params(StgParams &_sparams) : sparams(stg_ad_defaults) { sparams = _sparams; }
 };
 
+#ifdef __config__
 // Loads pair specific param values.
 #include "config/H1.h"
 #include "config/H4.h"
@@ -61,6 +62,7 @@ struct Stg_AD_Params : StgParams {
 #include "config/M15.h"
 #include "config/M30.h"
 #include "config/M5.h"
+#endif
 
 class Stg_AD : public Strategy {
  public:

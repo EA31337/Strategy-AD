@@ -21,7 +21,7 @@ INPUT float AD_MaxSpread = 4.0;            // Max spread to trade (pips)
 INPUT short AD_Shift = 0;                  // Shift (relative to the current bar, 0 - default)
 INPUT float AD_OrderCloseLoss = 0;         // Order close loss
 INPUT float AD_OrderCloseProfit = 0;       // Order close profit
-INPUT int AD_OrderCloseTime = -20;         // Order close time in mins (>0) or bars (<0)
+INPUT int AD_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("AD strategy: AD indicator params");
 INPUT int AD_Indi_AD_Shift = 0;  // Shift
 

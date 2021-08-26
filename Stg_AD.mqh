@@ -8,12 +8,12 @@ INPUT_GROUP("AD strategy: strategy params");
 INPUT float AD_LotSize = 0;                // Lot size
 INPUT int AD_SignalOpenMethod = 2;         // Signal open method
 INPUT int AD_SignalOpenFilterMethod = 36;  // Signal open filter method (-127-127)
-INPUT int AD_SignalOpenFilterTime = 6;     // Signal open filter time (-127-127)
-INPUT float AD_SignalOpenLevel = 0.02f;    // Signal open level
+INPUT int AD_SignalOpenFilterTime = 10;    // Signal open filter time (-255-255)
+INPUT float AD_SignalOpenLevel = 0.01f;    // Signal open level
 INPUT int AD_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int AD_SignalCloseMethod = 2;        // Signal close method
 INPUT int AD_SignalCloseFilter = 0;        // Signal close filter (-127-127)
-INPUT float AD_SignalCloseLevel = 0.02f;   // Signal close level
+INPUT float AD_SignalCloseLevel = 0.01f;   // Signal close level
 INPUT int AD_PriceStopMethod = 3;          // Price stop method
 INPUT float AD_PriceStopLevel = 0;         // Price stop level
 INPUT int AD_TickFilterMethod = -48;       // Tick filter method

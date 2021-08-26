@@ -8,7 +8,7 @@ INPUT_GROUP("AD strategy: strategy params");
 INPUT float AD_LotSize = 0;                // Lot size
 INPUT int AD_SignalOpenMethod = 2;         // Signal open method
 INPUT int AD_SignalOpenFilterMethod = 36;  // Signal open filter method (-127-127)
-INPUT int AD_SignalOpenFilterTime = 10;    // Signal open filter time (-255-255)
+INPUT int AD_SignalOpenFilterTime = 9;     // Signal open filter time (-255-255)
 INPUT float AD_SignalOpenLevel = 0.01f;    // Signal open level
 INPUT int AD_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int AD_SignalCloseMethod = 2;        // Signal close method

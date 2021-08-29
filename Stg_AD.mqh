@@ -38,6 +38,7 @@ struct Stg_AD_Params_Defaults : StgParams {
       : StgParams(::AD_SignalOpenMethod, ::AD_SignalOpenFilterMethod, ::AD_SignalOpenLevel, ::AD_SignalOpenBoostMethod,
                   ::AD_SignalCloseMethod, ::AD_SignalCloseFilter, ::AD_SignalCloseLevel, ::AD_PriceStopMethod,
                   ::AD_PriceStopLevel, ::AD_TickFilterMethod, ::AD_MaxSpread, ::AD_Shift) {
+    Set(STRAT_PARAM_LS, AD_LotSize);
     Set(STRAT_PARAM_OCL, AD_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, AD_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, AD_OrderCloseTime);
@@ -69,7 +70,7 @@ class Stg_AD : public Strategy {
   Stg_AD(StgParams &_sparams, TradeParams &_tparams, ChartParams &_cparams, string _name = "")
       : Strategy(_sparams, _tparams, _cparams, _name) {}
 
-  static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
+  static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     StgParams _stg_params(stg_ad_defaults);
 #ifdef __config__
@@ -81,7 +82,7 @@ class Stg_AD : public Strategy {
     _stg_params.SetIndicator(new Indi_AD(ad_params));
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
-    TradeParams _tparams(_magic_no, _log_level);
+    TradeParams _tparams;
     Strategy *_strat = new Stg_AD(_stg_params, _tparams, _cparams, "AD");
     return _strat;
   }

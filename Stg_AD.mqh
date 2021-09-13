@@ -30,7 +30,7 @@ INPUT int AD_Indi_AD_Shift = 0;  // Shift
 // Defines struct with default user indicator values.
 struct Indi_AD_Params_Defaults : ADParams {
   Indi_AD_Params_Defaults() : ADParams(::AD_Indi_AD_Shift) {}
-} indi_ad_defaults;
+};
 
 // Defines struct with default user strategy values.
 struct Stg_AD_Params_Defaults : StgParams {
@@ -44,7 +44,7 @@ struct Stg_AD_Params_Defaults : StgParams {
     Set(STRAT_PARAM_OCT, AD_OrderCloseTime);
     Set(STRAT_PARAM_SOFT, AD_SignalOpenFilterTime);
   }
-} stg_ad_defaults;
+};
 
 #ifdef __config__
 // Loads pair specific param values.
@@ -64,6 +64,8 @@ class Stg_AD : public Strategy {
 
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
+    Indi_AD_Params_Defaults indi_ad_defaults;
+    Stg_AD_Params_Defaults stg_ad_defaults;
     StgParams _stg_params(stg_ad_defaults);
 #ifdef __config__
     SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,

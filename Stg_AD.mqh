@@ -65,6 +65,7 @@ class Stg_AD : public Strategy {
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     Indi_AD_Params_Defaults indi_ad_defaults;
+    ADParams ad_params(indi_ad_defaults, _tf);
     Stg_AD_Params_Defaults stg_ad_defaults;
     StgParams _stg_params(stg_ad_defaults);
 #ifdef __config__
@@ -72,7 +73,6 @@ class Stg_AD : public Strategy {
                              stg_ad_h8);
 #endif
     // Initialize indicator.
-    ADParams ad_params(_tf);
     _stg_params.SetIndicator(new Indi_AD(ad_params));
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);

@@ -46,14 +46,6 @@ struct Stg_AD_Params_Defaults : StgParams {
   }
 } stg_ad_defaults;
 
-// Struct to define strategy parameters to override.
-struct Stg_AD_Params : StgParams {
-  StgParams sparams;
-
-  // Struct constructors.
-  Stg_AD_Params(StgParams &_sparams) : sparams(stg_ad_defaults) { sparams = _sparams; }
-};
-
 #ifdef __config__
 // Loads pair specific param values.
 #include "config/H1.h"

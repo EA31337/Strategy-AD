@@ -73,11 +73,11 @@ class Stg_AD : public Strategy {
                              stg_ad_h8);
 #endif
     // Initialize indicator.
-    _stg_params.SetIndicator(new Indi_AD(ad_params));
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;
     Strategy *_strat = new Stg_AD(_stg_params, _tparams, _cparams, "AD");
+    _strat.SetIndicator(new Indi_AD(ad_params));
     return _strat;
   }
 

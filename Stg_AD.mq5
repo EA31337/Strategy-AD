@@ -36,6 +36,13 @@ input bool Info_On_Chart = true;          // Display info on chart.
 #property link ea_link
 #property copyright "Copyright 2016-2021, EA31337 Ltd"
 
+// Load external resources.
+#ifdef __resource__
+#ifdef __MQL5__
+#resource STG_AD_INDI_FILE
+#endif
+#endif
+
 // Class variables.
 EA *ea;
 

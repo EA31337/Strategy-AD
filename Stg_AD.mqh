@@ -23,7 +23,8 @@ INPUT float AD_OrderCloseLoss = 80;        // Order close loss
 INPUT float AD_OrderCloseProfit = 80;      // Order close profit
 INPUT int AD_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("AD strategy: AD indicator params");
-INPUT int AD_Indi_AD_Shift = 0;  // Shift
+INPUT int AD_Indi_AD_Shift = 0;                                      // Shift
+INPUT ENUM_IDATA_SOURCE_TYPE AD_Indi_AD_SourceType = IDATA_BUILTIN;  // Source type
 
 // Structs.
 
@@ -73,6 +74,10 @@ class Stg_AD : public Strategy {
                              stg_ad_h8);
 #endif
     // Initialize indicator.
+    ad_params.SetDataSourceType(AD_Indi_AD_SourceType);
+#ifdef __resource__
+    ad_params.SetCustomIndicatorName("::" + STG_AD_INDI_FILE);
+#endif
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;

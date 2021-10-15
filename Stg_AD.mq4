@@ -11,3 +11,8 @@
 
 // Includes the main code.
 #include "Stg_AD.mq5"
+
+// Load external resources.
+#ifdef __resource__
+#resource STG_AD_INDI_FILE
+#endif

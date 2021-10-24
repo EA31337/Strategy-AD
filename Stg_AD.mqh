@@ -29,8 +29,8 @@ INPUT ENUM_IDATA_SOURCE_TYPE AD_Indi_AD_SourceType = IDATA_BUILTIN;  // Source t
 // Structs.
 
 // Defines struct with default user indicator values.
-struct Indi_AD_Params_Defaults : ADParams {
-  Indi_AD_Params_Defaults() : ADParams(::AD_Indi_AD_Shift) {}
+struct Indi_AD_Params_Defaults : IndiADParams {
+  Indi_AD_Params_Defaults() : IndiADParams(::AD_Indi_AD_Shift) {}
 };
 
 // Defines struct with default user strategy values.
@@ -66,7 +66,7 @@ class Stg_AD : public Strategy {
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     Indi_AD_Params_Defaults indi_ad_defaults;
-    ADParams ad_params(indi_ad_defaults, _tf);
+    IndiADParams ad_params(indi_ad_defaults, _tf);
     Stg_AD_Params_Defaults stg_ad_defaults;
     StgParams _stg_params(stg_ad_defaults);
 #ifdef __config__

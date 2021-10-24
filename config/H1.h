@@ -4,8 +4,8 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct ADParams_H1 : ADParams {
-  ADParams_H1() : ADParams(indi_ad_defaults, PERIOD_H1) { shift = 0; }
+struct IndiADParams_H1 : IndiADParams {
+  IndiADParams_H1() : IndiADParams(indi_ad_defaults, PERIOD_H1) { shift = 0; }
 } indi_ad_h1;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.

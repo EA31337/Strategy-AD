@@ -65,25 +65,30 @@ class Stg_AD : public Strategy {
 
   static Stg_AD *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
-    Indi_AD_Params_Defaults indi_ad_defaults;
-    IndiADParams ad_params(indi_ad_defaults, _tf);
     Stg_AD_Params_Defaults stg_ad_defaults;
     StgParams _stg_params(stg_ad_defaults);
 #ifdef __config__
     SetParamsByTf<StgParams>(_stg_params, _tf, stg_ad_m1, stg_ad_m5, stg_ad_m15, stg_ad_m30, stg_ad_h1, stg_ad_h4,
                              stg_ad_h8);
 #endif
-    // Initialize indicator.
-    ad_params.SetDataSourceType(AD_Indi_AD_SourceType);
-#ifdef __resource__
-    ad_params.SetCustomIndicatorName("::" + STG_AD_INDI_FILE);
-#endif
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;
     Strategy *_strat = new Stg_AD(_stg_params, _tparams, _cparams, "AD");
-    _strat.SetIndicator(new Indi_AD(ad_params));
     return _strat;
+  }
+
+  /**
+   * Event on strategy's init.
+   */
+  void OnInit() {
+    Indi_AD_Params_Defaults indi_ad_defaults;
+    IndiADParams ad_params(indi_ad_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+#ifdef __resource__
+    ad_params.SetCustomIndicatorName("::" + STG_AD_INDI_FILE);
+#endif
+    ad_params.SetDataSourceType(AD_Indi_AD_SourceType);
+    SetIndicator(new Indi_AD(ad_params));
   }
 
   /**

@@ -27,12 +27,6 @@ INPUT int AD_Indi_AD_Shift = 0;                                      // Shift
 INPUT ENUM_IDATA_SOURCE_TYPE AD_Indi_AD_SourceType = IDATA_BUILTIN;  // Source type
 
 // Structs.
-
-// Defines struct with default user indicator values.
-struct Indi_AD_Params_Defaults : IndiADParams {
-  Indi_AD_Params_Defaults() : IndiADParams(::AD_Indi_AD_Shift) {}
-};
-
 // Defines struct with default user strategy values.
 struct Stg_AD_Params_Defaults : StgParams {
   Stg_AD_Params_Defaults()
@@ -82,12 +76,12 @@ class Stg_AD : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
-    Indi_AD_Params_Defaults indi_ad_defaults;
-    IndiADParams ad_params(indi_ad_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    IndiADParams ad_params(::AD_Indi_AD_Shift);
 #ifdef __resource__
     ad_params.SetCustomIndicatorName("::" + STG_AD_INDI_FILE);
 #endif
     ad_params.SetDataSourceType(AD_Indi_AD_SourceType);
+    ad_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
     SetIndicator(new Indi_AD(ad_params));
   }
 

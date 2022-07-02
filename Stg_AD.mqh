@@ -80,9 +80,8 @@ class Stg_AD : public Strategy {
 #ifdef __resource__
     ad_params.SetCustomIndicatorName("::" + STG_AD_INDI_FILE);
 #endif
-    ad_params.SetDataSourceType(AD_Indi_AD_SourceType);
     ad_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
-    SetIndicator(new Indi_AD(ad_params));
+    SetIndicator(new Indi_AD(ad_params, ::AD_Indi_AD_SourceType));
   }
 
   /**
